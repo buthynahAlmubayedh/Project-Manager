@@ -1,0 +1,235 @@
+<div class="blog-page-wrapper">
+
+    <style>
+        /* ---------- COLOR PALETTE ---------- */
+        :root {
+            --first: #f0ece2;
+            --second: #dfd3c3;
+            --third: #c7b198;
+            --fourth: #596e79;
+        }
+
+        /* ---------- GLOBAL ---------- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, var(--first), var(--second));
+            color: var(--fourth);
+        }
+
+        h1, h2 {
+            font-weight: 700;
+            margin: 0;
+            color: var(--fourth);
+        }
+
+        /* ---------- CONTAINER ---------- */
+        .blog-page-wrapper {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .blog-card {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: 0.3s ease;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.12);
+        }
+
+        .blog-section-title {
+            font-size: 32px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        /* ---------- INPUTS ---------- */
+        .blog-input-label {
+            font-weight: 600;
+            font-size: 15px;
+            display: block;
+            margin-top: 25px;
+        }
+
+        .blog-input, 
+        .blog-textarea,
+        .blog-select {
+            width: 100%;
+            padding: 14px;
+            margin-top: 8px;
+            border-radius: 12px;
+            border: 2px solid var(--third);
+            background: var(--first);
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s ease;
+        }
+
+        .blog-input:focus,
+        .blog-textarea:focus,
+        .blog-select:focus {
+            border-color: var(--fourth);
+            background: #ffffff;
+            box-shadow: 0 0 8px rgba(89, 110, 121, 0.3);
+        }
+
+        .blog-textarea {
+            height: 140px;
+            resize: vertical;
+        }
+
+        /* ---------- BUTTON ---------- */
+        .blog-button {
+            margin-top: 35px;
+            background: var(--fourth);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            font-size: 17px;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            transition: 0.3s ease;
+        }
+
+        .blog-button:hover {
+            background: #44565e;
+            transform: translateY(-2px);
+        }
+
+        /* ---------- IMAGE UPLOAD ---------- */
+        .blog-upload-wrapper {
+            margin-top: 20px;
+        }
+
+        .blog-upload-label {
+            background: var(--third);
+            color: var(--fourth);
+            padding: 14px 20px;
+            border-radius: 12px;
+            display: inline-block;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s ease;
+            border: 2px dashed var(--fourth);
+        }
+
+        .blog-upload-label:hover {
+            background: var(--second);
+            transform: translateY(-2px);
+        }
+
+        #imageUpload {
+            display: none;
+        }
+
+        .blog-selected-file {
+            margin-top: 10px;
+            font-size: 14px;
+            font-style: italic;
+        }
+
+        /* ---------- PREVIEW BOX ---------- */
+        .blog-preview-box {
+            margin-top: 45px;
+            padding: 30px;
+            background: var(--second);
+            border-left: 8px solid var(--fourth);
+            border-radius: 16px;
+        }
+
+        .blog-preview-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 12px;
+        }
+
+        .blog-preview-text {
+            opacity: 0.8;
+            font-style: italic;
+        }
+    </style>
+
+    <!-- PROJECT FORM CARD -->
+    <div class="blog-card">
+        <h1 class="blog-section-title">Create a New Project</h1>
+
+        <form>
+            <label class="blog-input-label">Project Name</label>
+            <input type="text" class="blog-input" placeholder="Enter project name...">
+
+            <label class="blog-input-label">Project Description</label>
+            <textarea class="blog-textarea" placeholder="Describe your project..."></textarea>
+
+            <label class="blog-input-label">Project ID (Auto-Generated)</label>
+            <input id="projectId" type="text" class="blog-input" readonly style="background:#e9e7e2;">
+
+            <label class="blog-input-label">Start Date</label>
+            <input type="date" class="blog-input">
+
+            <label class="blog-input-label">Status</label>
+            <select class="blog-select">
+                <option value="">Select status</option>
+                <option>Not Started</option>
+                <option>In Progress</option>
+                <option>On Hold</option>
+                <option>Completed</option>
+            </select>
+
+            <label class="blog-input-label">Project Manager</label>
+            <input type="text" class="blog-input" placeholder="Enter project manager's name...">
+
+            <label class="blog-input-label">Team Members</label>
+            <input type="text" class="blog-input" placeholder="Enter member names (comma separated)...">
+
+            <label class="blog-input-label">Upload Image From PC</label>
+            <div class="blog-upload-wrapper">
+                <label for="imageUpload" class="blog-upload-label">Browse Image</label>
+                <input type="file" id="imageUpload" accept="image/*">
+                <p id="fileName" class="blog-selected-file"></p>
+            </div>
+
+            <button class="blog-button" type="submit">Create Project</button>
+        </form>
+    </div>
+
+    <!-- PREVIEW AREA -->
+    <div class="blog-preview-box">
+        <h2 class="blog-preview-title">Project Preview</h2>
+        <p class="blog-preview-text">A preview of your project will appear here once integrated.</p>
+    </div>
+
+</div>
+
+<script>
+    /* ---------- Handle Image Upload ---------- */
+    const fileInput = document.getElementById("imageUpload");
+    const fileNameDisplay = document.getElementById("fileName");
+
+    fileInput.addEventListener("change", function() {
+        if (this.files && this.files[0]) {
+            fileNameDisplay.textContent = "Selected: " + this.files[0].name;
+        } else {
+            fileNameDisplay.textContent = "";
+        }
+    });
+
+    /* ---------- Auto-generate random Project ID ---------- */
+    function generateProjectID() {
+        const randomId = "PRJ-" + Math.floor(100000 + Math.random() * 900000);
+        document.getElementById("projectId").value = randomId;
+    }
+
+    generateProjectID(); // Run on page load
+</script>
