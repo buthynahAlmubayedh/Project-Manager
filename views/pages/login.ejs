@@ -1,0 +1,247 @@
+<div class="login-page-container">
+    <style>
+        /* ---------- GLOBAL STICKY FOOTER FIX ---------- */
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+        
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            min-height: 100svh; /* iOS safe viewport */
+            background-color: #1a1a2e;
+            font-family: 'Inter', sans-serif;
+            color: white;
+            overflow-y: auto; /* prevent cutoff on small screens */
+        }
+        
+        main {
+            flex: 1 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px 0; /* prevents tight vertical spacing on mobile */
+        }
+        
+        /* ---------- CENTER THE LOGIN CARD ---------- */
+        .login-page-container {
+            width: 100%;
+            min-height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        
+        .login-card {
+            background: linear-gradient(145deg, #1a1a2e, #212d41, #1a1a2e);
+            padding: 50px 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.3);
+            border: 1px solid #212d41;
+            box-sizing: border-box;
+        }
+        
+        .login-header {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+        
+        .login-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, #6366f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        /* ---------- FORM ELEMENTS ---------- */
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #212d41;
+            background: rgba(255, 255, 255, 0.05);
+            font-size: 16px;
+            color: white;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: #6366f1;
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+        
+        /* ---------- LOGIN BUTTON ---------- */
+        .btn-login {
+            width: 100%;
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-login:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        .login-footer {
+                margin-top: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            }
+
+            .login-footer a{
+                color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            }
+        
+        /* ---------- IPAD RESPONSIVENESS ---------- */
+        @media (max-width: 1024px) {
+            main {
+                padding: 30px 0;
+            }
+        
+            .login-card {
+                padding: 40px 30px;
+                max-width: 400px;
+            }
+        }
+        
+        /* ---------- IPHONE & MOBILE PHONES ---------- */
+        @media (max-width: 640px) {
+            .login-page-container {
+                padding: 50px;
+                align-items: center;
+            }
+        
+            .login-card {
+                padding: 50px 20px;
+                max-width: 95%;
+                width: 100%;
+                border-radius: 20px;
+                margin: 0 auto;
+            }
+        
+            .login-header h1 {
+                font-size: 1.8rem;
+                margin-bottom: 5px;
+            }
+        
+            .form-group {
+                margin-bottom: 15px;
+            }
+        
+            .form-control {
+                font-size: 16px;
+                padding: 16px;
+            }
+        
+            .btn-login {
+                padding: 18px;
+                font-size: 1.1rem;
+                margin-top: 5px;
+            }
+        
+            .login-footer {
+                margin-top: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            }
+
+            .login-footer a{
+                color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+            }
+        }
+        </style>
+  <div class="login-card">
+      <div class="login-header">
+          <h1>Welcome Back</h1>
+          <p>Enter your credentials to access your workspace</p>
+      </div>
+
+      <form id="loginForm">
+          <div class="form-group">
+              <label class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="loginEmail" placeholder="name@company.com" required>
+          </div>
+          
+          <div class="form-group">
+              <label class="form-label">Password</label>
+              <input type="password" class="form-control" id="loginPassword" placeholder="••••••••" required>
+          </div>
+
+          <button type="button" class="btn-login" style="color:white; background-color: rgba(21, 21, 53, 0.3);" onclick="handleLogin()">Sign In</button>
+      </form>
+
+      <div class="login-footer">
+          Don't have an account? <a href="/register">Create one here</a>
+      </div>
+  </div>
+</div>
+
+  
+  <script>
+  async function handleLogin() {
+    const email = document.getElementById('loginEmail').value;
+    const password = document.getElementById('loginPassword').value;
+
+    const response = await fetch('/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    // REQUIRED: Allows the browser to store the session cookie
+    credentials: 'same-origin', 
+    body: JSON.stringify({ email, password })
+}); 
+
+
+    if (response.ok) {
+        // Redirect to the home page (which now acts as the dashboard)
+        window.location.href = "/";
+    }else if(response.status ===401){
+      const message = await response.text();
+      alert(message); // This will show "Please verify your email..."
+    } 
+    else 
+    {
+        const errorMsg = await response.text();
+        alert(errorMsg);
+    }
+}
+
+  </script>
+  

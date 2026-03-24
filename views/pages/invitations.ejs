@@ -1,0 +1,250 @@
+<div class="blog-page-wrapper">
+    <style>
+        :root {
+            --indigo-primary: #6366f1;
+            --slate-dark: #1a1a2e;
+            --slate-panel: #1e293b;
+            --text-slate: #94a3b8;
+        }
+    
+        body { 
+            background-color: var(--slate-dark); 
+            color: #f8fafc;
+            font-family: 'Inter', sans-serif;
+        }
+    
+        .project-wrapper {
+            background: linear-gradient(145deg,#1a1a2e, #212d41, #1a1a2e);
+            border: 2px solid #212d41;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: #212d41;
+            max-width: 900px;
+            margin: 40px auto;
+        }
+    
+        .blog-section-title {
+            font-size: 2rem;
+            font-weight: 800;
+            background: linear-gradient(to right, #fff, var(--indigo-primary));
+            -webkit-background-clip: text;
+            -webkit-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+    
+        /* INVITATION ITEM - Glass Style */
+        .invite-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 24px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+    
+        .invite-item:hover {
+            transform: translateY(-2px);
+            border-color: var(--indigo-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+    
+        .invite-info h3 {
+            margin: 0;
+            font-size: 1.25rem;
+            color: #fff;
+            font-weight: 700;
+        }
+    
+        .invite-info p {
+            margin: 4px 0;
+            font-size: 0.9rem;
+            color: var(--text-slate);
+        }
+    
+        .invite-info strong {
+            color: var(--indigo-primary);
+        }
+    
+        /* BUTTONS */
+        .action-group {
+            display: flex;
+            gap: 12px;
+        }
+    
+        .btn-action {
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+    
+        .btn-accept {
+            background: var(--indigo-primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+    
+        .btn-accept:hover {
+            background: #4f46e5;
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+    
+        .btn-decline {
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+    
+        .btn-decline:hover {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+        }
+    
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: rgba(0,0,0,0.1);
+            border-radius: 20px;
+            border: 1px dashed rgba(255,255,255,0.1);
+        }
+    
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--text-slate);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+    
+        .back-link:hover {
+            color: var(--indigo-primary);
+        }
+    
+        /* Message Alert */
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        @media (max-width: 1024px) {
+        .project-wrapper {
+            padding: 2rem;
+            margin: 20px auto;
+        }
+        
+        .blog-section-title {
+            font-size: 1.75rem;
+        }
+    }
+
+        /* Phones (768px and down) */
+    @media (max-width: 768px) {
+        .project-wrapper {
+            padding: 1.5rem;
+            border-radius: 20px;
+            width: 95%;
+        }
+
+        .invite-item {
+            flex-direction: column; /* Stacks info above buttons */
+            align-items: flex-start; /* Aligns text to the left */
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .action-group {
+            width: 100%; /* Buttons take full width */
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Side by side buttons on mobile */
+            gap: 10px;
+        }
+
+        .btn-action {
+            width: 100%;
+            padding: 12px 0; /* Larger touch target */
+            text-align: center;
+        }
+
+        .blog-section-title {
+            font-size: 1.5rem;
+            text-align: center;
+        }
+
+        .invite-info h3 {
+            font-size: 1.1rem;
+        }
+    }
+
+    /* Small Phones (480px and down) */
+    @media (max-width: 480px) {
+        .action-group {
+            grid-template-columns: 1fr; /* Stack buttons on very small screens */
+        }
+        
+        .btn-accept {
+            order: 1; /* Accept button on top */
+        }
+        .btn-decline {
+            order: 2; /* Decline button on bottom */
+        }
+    }
+
+    </style>
+    
+
+    <div class="container">
+        <div class="project-wrapper">
+            <h1 class="blog-section-title">Project Invitations</h1>
+            <p class="text-slate mb-4">
+                Manage requests from other managers to join their project teams.
+            </p>
+    
+            <% if (typeof msg !== 'undefined') { %>
+                <div class="alert-success">
+                    <%= msg %>
+                </div>
+            <% } %>
+    
+            <% if (invites && invites.length > 0) { %>
+                <% invites.forEach(invite => { %>
+                    <div class="invite-item">
+                        <div class="invite-info">
+                            <h3><%= invite.name %></h3>
+                            <p>Invited by: <strong><%= invite.inviter_name %></strong></p>
+                            <p style="opacity: 0.6; font-style: italic;"><%= invite.description || 'No description provided.' %></p>
+                        </div>
+    
+                        <div class="action-group">
+                            <form action="/project/<%= invite.project_id %>/accept-invite" method="POST">
+                                <button type="submit" class="btn-action btn-accept">Accept</button>
+                            </form>
+    
+                            <form action="/project/<%= invite.project_id %>/decline-invite" method="POST">
+                                <button type="submit" class="btn-action btn-decline">Decline</button>
+                            </form>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="empty-state">
+                    <div style="font-size: 50px; margin-bottom: 15px; filter: grayscale(1); opacity: 0.5;">📩</div>
+                    <p class="text-slate mb-4">You have no pending project invitations at this time.</p>
+                    <a href="/" class="btn-action btn-accept text-decoration-none d-block w-100 text-center">Return to Dashboard</a>
+                </div>
+            <% } %>
+    
+            <a href="/" class="back-link">← Back to My Projects</a>
+        </div>
+    </div>
+    

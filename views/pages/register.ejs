@@ -1,8 +1,185 @@
-<body>
-    <form>
-         <label for="fname">First name:</label><br>
-         <input type="text" id="fname" name="fname"><br>
-         <label for="lname">Last name:</label><br>
-         <input type="text" id="lname" name="lname">
-    </form>
-</body>
+<div class="register-page-container">
+    <style>
+        /* CENTER THE CARD */
+        .register-page-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 90vh;
+            padding: 20px;
+            background: linear-gradient(145deg,#1a1a2e, #212d41, #1a1a2e);
+          color:white;
+        }
+
+        .register-card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 24px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 20px 25px -5px rgba(0,0,0,0.05);
+            border: 1px solid var(--border-color);
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-header h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .register-header p {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        /* FORM GRID (Horizontal-ish feel for inputs) */
+        .register-form {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-label {
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1.5px solid var(--border-color);
+            background: #ffffff;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+            box-sizing: border-box;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+
+        /* REGISTER BUTTON */
+        .btn-register {
+            background: var(--primary);
+           
+            border: none;
+            padding: 16px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-register:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+        }
+
+        .register-footer {
+            margin-top: 25px;
+            text-align: center;
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .register-footer a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+    </style>
+
+    <div class="register-card">
+        <div class="register-header">
+            <h1>Create Account</h1>
+            <p>Join the workspace and start managing projects</p>
+        </div>
+
+        <form id="registerForm" class="register-form">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="text" class="form-control" id="regUsername" placeholder="johndoe123" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="regEmail" placeholder="john@example.com" required>
+            </div>
+            
+
+<div class="form-group">
+    <label class="form-label">Password</label>
+    <input type="password" class="form-control" id="regPassword" placeholder="••••••••" required>
+</div>
+
+<div class="form-group">
+    <label class="form-label">Confirm Password</label>
+    <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••" required>
+</div>
+
+            <button type="button" class="btn-register" style="color:white; background-color: rgba(21, 21, 53, 0.3);" onclick="handleRegister()" onclick="alert('Button Clicked!')">Create Account</button>
+        </form>
+
+        <div class="register-footer">
+            Already have an account? <a href="/login">Sign in instead</a>
+        </div>
+    </div>
+</div>
+
+<script>
+async function handleRegister() {
+    const username = document.getElementById('regUsername').value;
+    const email = document.getElementById('regEmail').value;
+    const password = document.getElementById('regPassword').value;
+    // 2. CHECK THIS LINE: Ensure the ID matches your HTML 'confirmPassword'
+    const confirmPassword = document.getElementById('confirmPassword').value;
+
+    // 3. Debugging: Log here to see if it's empty before sending
+    console.log("Sending:", { username, email, password, confirmPassword });
+  
+
+    try {
+        const response = await fetch('/submit', {
+    method: 'POST',
+    headers: { 
+        'Content-Type': 'application/json' // MUST MATCH express.json()
+    },
+    body: JSON.stringify({ username, email, password, confirmPassword })
+});
+
+        const resultText = await response.text();
+
+        if (response.status === 201) {
+            alert(resultText);
+            window.location.href = "/"; // Redirect to dashboard
+        } else if (response.status === 409) {
+            alert("Conflict: " + resultText);
+        } else {
+            alert("Error: " + resultText);
+        }
+    } catch (err) {
+        console.error("Fetch error:", err);
+        alert("An unexpected error occurred.");
+    }
+}
+</script>

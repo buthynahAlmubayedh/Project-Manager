@@ -1,56 +1,96 @@
-       body {
-            margin: 0;
-            padding: 0;
-            background: #f0ece2; /* first-color */
-            font-family: Arial, sans-serif;
-        }
+/* Updated Styles for the Create Project Form */
+body {
+    margin: 0;
+    padding: 0;
+    background: #f8fafc; /* light slate bg */
+    font-family: 'Inter', -apple-system, sans-serif;
+}
 
-        .container {
-            width: 40%;
-            margin: 50px auto;
-            background: #dfd3c3; /* second-color */
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
+.container {
+    width: 40%;
+    min-width: 400px; /* Ensures it looks good on smaller screens */
+    margin: 80px auto;
+    background: #ffffff; /* white card */
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+    border: 1px solid #e2e8f0;
+}
 
-        h1 {
-            text-align: center;
-            color: #596e79; /* fourth-color */
-            margin-bottom: 20px;
-        }
+h1 {
+    text-align: left; /* Aligned left to match section titles */
+    color: #1e293b; 
+    margin-bottom: 30px;
+    font-size: 2rem;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
-        label {
-            font-weight: bold;
-            color: #596e79; /* fourth-color */
-        }
+/* Matching the blue accent bar from the dashboard */
+h1::before {
+    content: '';
+    width: 4px;
+    height: 32px;
+    background: #6366f1; /* Indigo primary */
+    border-radius: 4px;
+}
 
-        input[type="text"], textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            margin-bottom: 20px;
-            border: 2px solid #c7b198; /* third-color */
-            border-radius: 8px;
-            background: #f0ece2; /* first-color */
-        }
+label {
+    font-weight: 600;
+    color: #475569;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
+}
 
-        textarea {
-            height: 150px;
-            resize: none;
-        }
+input[type="text"], 
+textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 8px;
+    margin-bottom: 24px;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background: #ffffff;
+    font-family: inherit;
+    font-size: 1rem;
+    box-sizing: border-box; /* Prevents width issues */
+    transition: all 0.2s ease;
+}
 
-        .btn-submit {
-            width: 100%;
-            background: #596e79; /* fourth-color */
-            color: white;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-        }
+input[type="text"]:focus, 
+textarea:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
 
-        .btn-submit:hover {
-            background: #3f535b;
-        }
+textarea {
+    height: 120px;
+    resize: vertical; /* Better UX than 'none' */
+}
+
+.btn-submit {
+    width: 100%;
+    background: #6366f1; /* Indigo primary */
+    color: white;
+    padding: 16px;
+    border: none;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-submit:hover {
+    background: #4f46e5;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}

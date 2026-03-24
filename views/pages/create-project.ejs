@@ -1,0 +1,299 @@
+<div class="blog-page-wrapper">
+    <style>
+        /* ---------- COLOR PALETTE (Slate & Indigo) ---------- */
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --bg-main: #1a1a2e;
+            --bg-card: linear-gradient(145deg,#1a1a2e, #212d41, #1a1a2e);
+            --text-dark: white;
+            --text-light: #64748b;
+            --border-color: #212d41;
+        }
+        
+        /* ---------- GLOBAL ---------- */
+        html, body {
+            height: 100%;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg-main);
+            color: var(--text-dark);
+        
+            /* ✅ iOS FIXES */
+            min-height: 100vh;
+            min-height: 100svh;
+        }
+        
+        /* ---------- CONTAINER ---------- */
+        .blog-page-wrapper {
+            max-width: 1000px;
+            margin: 60px auto;
+            padding: 0 20px;
+        
+            /* ✅ prevents cutoff on small screens */
+            box-sizing: border-box;
+        }
+        
+        .blog-card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02), 0 10px 15px -3px rgba(0,0,0,0.03);
+            border: 1px solid var(--border-color);
+        }
+        
+        .blog-section-title {
+            font-size: 1.85rem;
+            font-weight: 800;
+            margin-bottom: 35px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        
+        .blog-section-title::before {
+            content: '';
+            width: 5px;
+            height: 35px;
+            background: var(--primary);
+            border-radius: 10px;
+        }
+        
+        /* ---------- HORIZONTAL GRID LAYOUT ---------- */
+        form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px 30px;
+        }
+        
+        /* Full width elements */
+        .full-width {
+            grid-column: span 2;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* ---------- INPUTS ---------- */
+        .blog-input-label {
+            font-weight: 600;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+        
+        .blog-input, .blog-textarea, .blog-select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 1.5px solid var(--border-color);
+            font-size: 16px; /* ✅ prevent iOS zoom */
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+        
+        .blog-input:focus, .blog-textarea:focus, .blog-select:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        }
+        
+        .blog-textarea {
+            height: 100px;
+        }
+        
+        /* ---------- ACTION BUTTONS ---------- */
+        .button-group {
+            grid-column: span 2;
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .blog-button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+        
+        .blog-button:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-cancel {
+            background: transparent;
+            color: var(--text-light);
+            border: 1.5px solid var(--border-color);
+        }
+        
+        .btn-cancel:hover {
+            background: #f1f5f9;
+            color: var(--text-dark);
+            border-color: var(--text-light);
+        }
+        
+        /* ---------- iPad (TABLET) ---------- */
+        @media (max-width: 1024px) {
+            .blog-page-wrapper {
+                margin: 40px auto;
+                max-width: 90%;
+            }
+        
+            .blog-card {
+                padding: 30px;
+            }
+        
+            /* ✅ iPad layout fix */
+            form {
+                grid-template-columns: 1fr;
+            }
+        
+            .full-width,
+            .button-group {
+                grid-column: span 1;
+            }
+        }
+        
+        /* ---------- MOBILE (iPhone) ---------- */
+        @media (max-width: 640px) {
+            .blog-page-wrapper {
+                margin: 30px auto;
+                max-width: 95%;
+            }
+        
+            .blog-card {
+                padding: 25px;
+                border-radius: 20px;
+            }
+        
+            form {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+        
+            .button-group {
+                flex-direction: column-reverse;
+                width: 100%;
+            }
+        
+            .blog-button {
+                width: 100%;
+                text-align: center;
+            }
+        }
+        </style>
+    
+    
+    <!-- PROJECT FORM CARD -->
+    
+
+    <!-- PREVIEW AREA -->
+    <div class="blog-card">
+        <h1 class="blog-section-title">Create a New Project</h1>
+    
+        <form action="/submit-project" method="POST">
+            <!-- Group 1: Project Name -->
+            <div class="form-group">
+                <label class="blog-input-label">Project Name</label>
+                <input type="text" class="blog-input" name="name" placeholder="Enter project name..." required>
+            </div>
+    
+            <!-- Group 2: Project Manager -->
+            <div class="form-group">
+                <label class="blog-input-label">Project Manager</label>
+                <input type="text" class="blog-input" placeholder="Enter manager's name..." name="manager_name" required>
+            </div>
+    
+            <!-- Group 3: Start Date -->
+            <div class="form-group">
+                <label class="blog-input-label">Start Date</label>
+                <input type="date" class="blog-input" name="start_date" required>
+            </div>
+    
+            <!-- Group 4: Status -->
+            <div class="form-group">
+                <label class="blog-input-label">Status</label>
+                <select class="blog-select" name="status" required>
+                    <option value="Not Started">Not Started</option>
+                    <option value="In Progress">In Progress</option>
+                    <option value="On Hold">On Hold</option>
+                    <option value="Completed">Completed</option>
+                </select>
+            </div>
+    
+            <!-- Group 5: Description (Full Width) -->
+            <div class="form-group full-width">
+                <label class="blog-input-label">Project Description</label>
+                <textarea class="blog-textarea" placeholder="Describe your project..." name="description" required></textarea>
+            </div>
+    
+            <!-- Group 6: Buttons (Full Width) -->
+            <div class="button-group">
+                <a href="/" class="blog-button btn-cancel" style="text-decoration: none; text-align: center; display: inline-block;">Cancel</a>
+                <button class="blog-button" type="submit">Create Project</button>
+            </div>
+        </form>
+    </div>
+    
+    
+
+<script>
+//     /* ---------- Handle Image Upload ---------- */
+//     const fileInput = document.getElementById("imageUpload");
+//     const fileNameDisplay = document.getElementById("fileName");
+
+//     fileInput.addEventListener("change", function() {
+//         if (this.files && this.files[0]) {
+//             fileNameDisplay.textContent = "Selected: " + this.files[0].name;
+//         } else {
+//             fileNameDisplay.textContent = "";
+//         }
+//     });
+
+//     /* ---------- Auto-generate random Project ID ---------- */
+//     function generateProjectID() {
+//         const randomId = "PRJ-" + Math.floor(100000 + Math.random() * 900000);
+//         document.getElementById("projectId").value = randomId;
+//     }
+
+//     generateProjectID(); // Run on page load
+
+//     /* ---------- Real-Time Preview Logic ---------- */
+// const nameInput = document.querySelector('input[name="name"]');
+// const descInput = document.querySelector('textarea[name="description"]');
+// const previewTitle = document.querySelector('.blog-preview-title');
+// const previewText = document.querySelector('.blog-preview-text');
+
+// nameInput.addEventListener('input', () => {
+//     previewTitle.textContent = nameInput.value || "Project Preview";
+// });
+
+// descInput.addEventListener('input', () => {
+//     previewText.textContent = descInput.value || "A preview will appear here...";
+// });
+
+function generateProjectID() {
+    const randomId = "PRJ-" + Math.floor(100000 + Math.random() * 900000);
+    // Change "projectId" to "projectIdDisplay"
+    const displayElement = document.getElementById("projectIdDisplay");
+    if (displayElement) displayElement.value = randomId;
+}
+
+</script>

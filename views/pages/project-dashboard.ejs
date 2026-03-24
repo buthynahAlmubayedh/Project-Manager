@@ -1,0 +1,625 @@
+
+<style>
+/* ========== GLOBAL RESET ========== */
+* {
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+:root {
+        --indigo-primary: #6366f1;
+        --slate-bg: #1a1a2e;
+    }
+    
+    body { background-color: var(--slate-bg); }
+.btn-indigo {
+        background-color: var(--indigo-primary);
+        color: white;
+        border: none;
+    }
+    .btn-indigo:hover {
+        background-color: #4f46e5;
+        color: white;
+    }
+
+    .bg-indigo-soft {
+        background-color: linear-gradient(145deg,#1a1a2e, #212d41, #1a1a2e);
+        color: #a5b4fc;
+    }
+
+    .blog-input, .blog-select, .blog-textarea {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+    }
+
+    .blog-input:focus {
+        background: rgba(0, 0, 0, 0.3);
+        border-color: var(--indigo-primary);
+        color: white;
+        box-shadow: none;
+    }
+
+
+.timeline { list-style: none; padding: 0; position: relative; }
+.timeline:before { content: ''; position: absolute; top: 0; bottom: 0; width: 2px; background: rgba(99, 102, 241, 0.2); left: 15px; }
+.timeline-item { margin-bottom: 20px; position: relative; padding-left: 45px; }
+.timeline-marker { position: absolute; top: 0; left: 0; width: 30px; height: 30px; border-radius: 50%; background: var(--indigo-primary); border: 4px solid #1e293b; }
+.timeline-content .date { font-size: 11px; color: var(--text-slate); text-transform: uppercase; }
+
+
+
+/* ========== PAGE ========== */
+.blog-page-wrapper {
+  max-width: 900px;
+  margin: 48px auto;
+  padding: 0 20px;
+}
+
+/* ========== CARD ========== */
+.blog-card {
+  background: #ffffff;
+  padding: 36px;
+  border-radius: 14px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* ========== HEADINGS ========== */
+.blog-section-title {
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--fourth);
+  margin-bottom: 10px;
+}
+
+.blog-section-subtitle {
+  margin-top: 42px;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--fourth);
+}
+
+/* ========== META INFO ========== */
+.project-meta {
+  text-align: center;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 28px;
+}
+
+/* ========== DESCRIPTION ========== */
+.project-description {
+  background: #f0ece2;
+  padding: 18px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.project-description p {
+  margin-top: 6px;
+  line-height: 1.6;
+  color: #333;
+}
+
+/* ========== TABLE ========== */
+.task-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-top: 22px;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.task-table thead th {
+  background: var(--fourth);
+  color: #fff;
+  padding: 14px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.task-table tbody td {
+  padding: 14px;
+  font-size: 14px;
+  background: #fff;
+  border-bottom: 1px solid var(--third);
+}
+
+.task-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.task-table tbody tr:hover {
+  background: #fafafa;
+}
+
+/* ========== BADGES ========== */
+.badge {
+  display: inline-block;
+  min-width: 64px;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.badge.high {
+  background: #e74c3c;
+}
+
+.badge.normal {
+  background: #c7b198;
+}
+
+/* ========== EMPTY STATE ========== */
+.no-data {
+  text-align: center;
+  padding: 22px;
+  font-size: 14px;
+  color: #666;
+  background: #fafafa;
+}
+
+/* ========== BUTTONS ========== */
+.action-buttons {
+  display: flex;
+  gap: 14px;
+  margin-top: 32px;
+  flex-wrap: wrap;
+}
+
+.blog-button {
+  padding: 12px 22px;
+  border-radius: 8px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.blog-button.primary {
+  background: var(--fourth);
+  color: #fff;
+}
+
+.blog-button.secondary {
+  background: var(--third);
+  color: var(--fourth);
+}
+
+.blog-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+}
+
+/* ========== BACK LINK ========== */
+.back-link {
+  display: block;
+  text-align: center;
+  margin-top: 28px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--fourth);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+/* ========== FORM ELEMENTS ========== */
+.blog-input,
+.blog-select,
+.blog-textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.blog-input:focus,
+.blog-select:focus,
+.blog-textarea:focus {
+  outline: none;
+  border-color: var(--fourth);
+  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+}
+
+.blog-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* ========== LABELS ========== */
+.blog-input-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: white;
+}
+
+/* ========== MODALS (Bootstrap Friendly) ========== */
+.modal-content {
+  background: rgba(26, 26, 46, 0.95);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: white;
+}
+
+.modal-header {
+  border-bottom: 1px solid #eee;
+}
+
+.modal-title {
+  font-weight: 600;
+  color: var(--fourth);
+}
+
+.modal-body p {
+  font-size: 14px;
+  margin-bottom: 14px;
+}
+
+.modal-footer {
+  border-top: 1px solid #eee;
+}
+
+#th-tasks{
+    color: #333;
+    background-color: #c7b198;
+}
+
+</style>
+
+  
+  
+  <div class="container py-5">
+    <div class="card shadow-lg border-0" style="background: linear-gradient(145deg,#1a1a2e, #212d41, #1a1a2e); color: #f1f5f9; border-radius: 16px;  border: 2px solid #212d41; box-shadow: #212d41;">
+        <div class="card-body p-4 p-md-5">
+            <!-- 1. Project Header -->
+            <h1 class="display-5 fw-bold mb-1"><%= project.name %></h1>
+            <div class="mb-4 text-light border-bottom pb-3">
+                Status: <span class="badge bg-indigo-soft text-indigo"><%= project.status %></span> | 
+                Created by: <span class="fw-semibold text-light"><%= project.owner_name %></span>
+            </div>
+  
+            <div class="mb-5">
+                <h5 class="text-indigo fw-bold">Description</h5>
+                <p class="lead fs-6 opacity-75"><%= project.description || 'No description provided.' %></p>
+            </div>
+  
+            <!-- 2. Task Table -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="h4 mb-0">Project Tasks</h3>
+              
+              <% if (currentUser === project.owner_name) { %>
+                  <!-- Only the owner sees this group -->
+                  <div class="btn-group">
+                      <button class="btn btn-indigo" data-bs-toggle="modal" data-bs-target="#taskModal">+ New Task</button>
+                      
+                      <button type="button" class="btn btn-outline-indigo" data-bs-toggle="modal" data-bs-target="#updateProjectModal">
+                          Update Project
+                      </button>
+          
+                      <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#memberModal">+ Invite</button>
+                  </div>
+              <% } else { %>
+                  <!-- Optional: Show a "Member View" badge or nothing at all -->
+                  <span class="badge bg-secondary bg-opacity-25 text-slate border border-secondary border-opacity-50">Member Access</span>
+              <% } %>
+          </div>
+
+            
+<!-- TASK MODAL (Updated with Member Dropdown) -->
+<div class="modal fade" id="taskModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="/project/<%= project.project_id %>/task" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Create New Task</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" ></button>
+      </div>
+      <div class="modal-body">
+        <label class="blog-input-label" style="color: white;">Task Title</label>
+        <input type="text" name="title" class="blog-input" placeholder="What needs to be done?" required>
+        
+        <label class="blog-input-label" style="color: white;">Assign To</label>
+        <select name="assigned_user_id" class="blog-select">
+          <option value="">Unassigned</option>
+          <% members.forEach(user => { %>
+              <option value="<%= user.user_id %>"><%= user.username %></option>
+          <% }) %>
+      </select>
+
+   
+      
+        
+
+        <label class="blog-input-label" style="color: white;">Priority</label>
+        <select name="priority" class="blog-select">
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+            <option value="Urgent">Urgent</option>
+        </select>
+
+        <label class="blog-input-label" style="color: white;">Status</label>
+        <select name="status" class="blog-select">
+            <option value="To Do">To Do</option>
+            <option value="In Progress" selected>In Progress</option>
+            <option value="Done">Done</option>
+            <option value="On Hold">On Hold</option>
+        </select>
+
+        <label class="blog-input-label" style="color: white;">Description</label>
+        <textarea name="description" class="blog-textarea" placeholder="Provide more details..."></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="blog-button primary" style="color: white; background-color: rgb(44, 44, 61);">Save Task</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!--Update Project MODAL-->
+<div class="modal fade" id="updateProjectModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="/project/<%= project.project_id %>/update" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Project Settings</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label class="blog-input-label">Project Name</label>
+        <input type="text" name="name" class="blog-input" value="<%= project.name %>" required>
+        
+        <label class="blog-input-label">Description</label>
+        <textarea name="description" class="blog-textarea" required><%= project.description %></textarea>
+
+        <label class="blog-input-label">Status</label>
+        <select name="status" class="blog-select">
+          <option value="Completed" <%= project.status === 'Not Started' ? 'selected' : '' %>>Not Started</option>
+            <option value="Active" <%= project.status === 'Active' ? 'selected' : '' %>>Active</option>
+            <option value="On Hold" <%= project.status === 'On Hold' ? 'selected' : '' %>>On Hold</option>
+            <option value="Completed" <%= project.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+            <option value="Completed" <%= project.status === 'Completed' ? 'selected' : '' %>>Completed</option>         
+        </select>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-indigo w-100">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MEMBER MODAL -->
+
+<div class="modal fade" id="memberModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <form class="modal-content" action="/project/<%= project.project_id %>/add-member" method="POST">
+      <div class="modal-header">
+        <h5 class="modal-title">Invite Member to Project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Enter the email address of the registered user you want to invite.</p>
+        <input type="email" name="email" class="blog-input" placeholder="user@example.com" required>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="blog-button primary" style="color: white; background-color: rgb(44, 44, 61);">Send Invitation</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+  
+<div class="table-responsive">
+  <table class="table table-hover table-dark align-middle">
+      <thead>
+          <tr>
+              <th class="border-0">Task</th>
+              <th class="border-0">Priority</th>
+              <th class="border-0">Assignee</th>
+              <th class="border-0">Status</th>
+              <th class="border-0">Description</th>
+              <th class="border-0 text-center">Actions</th> <!-- Added Header -->
+          </tr>
+      </thead>
+      <tbody>
+          <% if (tasks && tasks.length > 0) { %>
+              <% tasks.forEach(task => { %>
+                  <tr>
+                      <td class="fw-bold"><%= task.title %></td>
+                      <td>
+                          <span class="badge <%= (task.priority === 'High' || task.priority === 'Urgent') ? 'bg-danger' : 'bg-success' %>">
+                              <%= task.priority %>
+                          </span>
+                      </td>
+                      <td><%= task.assigned_to_name || 'Unassigned' %></td>
+                      <td><span class="badge bg-secondary opacity-75"><%= task.status || 'To Do' %></span></td>
+                      <td>
+                        <button class="btn btn-sm btn-link text-decoration-none p-0" data-bs-toggle="modal" data-bs-target="#commentModal<%= task.task_id %>">
+                            <i class="bi bi-chat-dots"></i> 
+                            <%= (task.description || 0) %> <!-- Shows number of comments if available -->
+                        </button>
+                    </td>
+                      <!-- Action Column -->
+                      <td class="text-center">
+                          <div class="btn-group">
+                              <!-- View Button (Always visible) -->
+                              <button class="btn btn-sm btn-outline-light" data-bs-toggle="modal" data-bs-target="#viewTask<%= task.task_id %>">
+                                  View
+                              </button>
+
+                              <!-- Update Button (Only for Assigned User or Project Owner) -->
+                              <% if (currentUser === task.assigned_to_name || currentUser === project.owner_name) { %>
+                                  <button class="btn btn-sm btn-indigo" data-bs-toggle="modal" data-bs-target="#updateTask<%= task.task_id %>">
+                                      Update
+                                  </button>
+                              <% } %>
+
+                              <button class="btn btn-sm btn-outline-info" data-bs-toggle="modal" data-bs-target="#historyModal<%= task.task_id %>">
+                                <i class="bi bi-clock-history"></i> View History
+                            </button>
+                            
+                          </div>
+                      </td>
+                  </tr>
+              <% }) %>
+          <% } else { %>
+              <tr><td colspan="5" class="text-center py-4 opacity-50">No tasks found.</td></tr>
+          <% } %>
+      </tbody>
+  </table>
+</div>
+
+  
+            <a href="/" class="text-decoration-none text-light mt-4 d-inline-block small">← Back to Projects</a>
+        </div>
+    </div>
+  </div>
+  
+
+
+
+
+
+
+
+  <% tasks.forEach(task => { %>
+      <!--Update Task Modal-->
+<div class="modal fade" id="updateTask<%= task.task_id %>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+      <form class="modal-content" action="/task/<%= task.task_id %>/update" method="POST">
+          <div class="modal-header">
+              <h5 class="modal-title">Update Task: <%= task.title %></h5>
+              <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+              <!-- Hidden Project ID to redirect back correctly -->
+              <input type="hidden" name="project_id" value="<%= project.project_id %>">
+
+              <label class="blog-input-label">Task Status</label>
+              <select name="status" class="blog-select">
+                  <option value="To Do" <%= task.status === 'To Do' ? 'selected' : '' %>>To Do</option>
+                  <option value="In Progress" <%= task.status === 'In Progress' ? 'selected' : '' %>>In Progress</option>
+                  <option value="Done" <%= task.status === 'Done' ? 'selected' : '' %>>Done</option>
+                  <option value="On Hold" <%= task.status === 'On Hold' ? 'selected' : '' %>>On Hold</option>
+              </select>
+
+              <label class="blog-input-label">Priority</label>
+              <select name="priority" class="blog-select">
+                  <option value="Low" <%= task.priority === 'Low' ? 'selected' : '' %>>Low</option>
+                  <option value="Medium" <%= task.priority === 'Medium' ? 'selected' : '' %>>Medium</option>
+                  <option value="High" <%= task.priority === 'High' ? 'selected' : '' %>>High</option>
+                  <option value="Urgent" <%= task.priority === 'Urgent' ? 'selected' : '' %>>Urgent</option>
+              </select>
+
+              <label class="blog-input-label">Additional Comments (Optional)</label>
+              <textarea name="comment" class="blog-textarea" placeholder="Describe what changed..."></textarea>
+          </div>
+          <div class="modal-footer">
+              <button type="submit" class="btn btn-indigo w-100">Save Changes</button>
+          </div>
+      </form>
+  </div>
+</div>
+<!--History VIEW MODAL-->
+
+<div class="modal fade" id="historyModal<%= task.task_id %>" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-md">
+    <div class="modal-content">
+      <div class="modal-header bg-info text-white">
+        <h5 class="modal-title">History: <%= task.title %></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <% if (task.history && task.history.length > 0) { %>
+            <% task.history.forEach(log => { %>
+                <div class="border-start border-4 border-info ps-3 mb-3">
+                    <strong><%= log.change_type %></strong>
+                    <p class="mb-0"><%= log.old_value %> → <%= log.new_value %></p>
+                    <p class="mb-0" style="font-weight: bold; color: #353564;">Comment: <%= log.update_comment %></p>
+                    <small class="">By <%= log.changed_by %> on <%= new Date(log.changed_at).toLocaleString() %></small>
+                </div>
+            <% }) %>
+        <% } else { %>
+            <p class="text-center ">No history yet.</p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+<% }) %> 
+  <!--View Task Modal-->
+
+  <% tasks.forEach(task => { %>
+    <div class="modal fade" id="viewTask<%= task.task_id %>" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Task Details: <%= task.title %></h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <p class="text-slate small mb-1">Assigned To</p>
+                            <p class="fw-bold"><%= task.assigned_to_name || 'Unassigned' %></p>
+                        </div>
+                        <div class="col-md-6 text-md-end">
+                            <span class="badge bg-indigo-soft text-indigo"><%= task.status %></span>
+                        </div>
+                    </div>
+    
+                    <h6 class="text-indigo fw-bold small text-uppercase mb-3">Change History</h6>
+                    <ul class="timeline">
+                        <!-- This assumes you fetched 'task_history' for each task -->
+                        <% if (task.history && task.history.length > 0) { %>
+                            <% task.history.forEach(log => { %>
+                                <li class="timeline-item">
+                                    <div class="timeline-marker"></div>
+                                    <div class="timeline-content">
+                                        <div class="date"><%= new Date(log.changed_at).toLocaleString() %></div>
+                                        <p class="mb-0">
+                                            <strong><%= log.changed_by %></strong> updated <%= log.change_type.toLowerCase() %> 
+                                            from <span class="text-danger"><%= log.old_value %></span> to 
+                                            <span class="text-success"><%= log.new_value %></span>.
+                                        </p>
+                                    </div>
+                                </li>
+                            <% }) %>
+                        <% } else { %>
+                            <p class="text-slate small italic">No history available for this task.</p>
+                        <% } %>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% }) %>
+    
+  
+  <script>
+  function populateEditModal(taskData) {
+      const task = JSON.parse(taskData);
+      // Set the form action to the specific task ID
+      document.getElementById('editTaskForm').action = `/task/${task.task_id}/update`;
+      
+      // Fill the fields
+      document.getElementById('editTitle').value = task.title;
+      document.getElementById('editAssignee').value = task.assigned_user_id || "";
+      document.getElementById('editPriority').value = task.priority;
+      document.getElementById('editStatus').value = task.status;
+  }
+
+  
+  </script>
+ <script src="https://cdn.jsdelivr.net"></script>

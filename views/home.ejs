@@ -1,107 +1,203 @@
-<body>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to Your Project Manager</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f0ece2;
-    }
-    .hero {
-      background: #596e79;
-      color: white;
-      padding: 80px 20px;
-      text-align: center;
-    }
-    .hero h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
-    }
-    .hero p {
-      font-size: 20px;
-      max-width: 700px;
-      margin: 0 auto;
-    }
-    .container {
-      max-width: 900px;
-      margin: 40px auto;
-      background: #dfd3c3;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    }
-    .section-title {
-      color: #596e79;
-      font-size: 28px;
-      margin-bottom: 10px;
-      border-left: 6px solid #c7b198;
-      padding-left: 10px;
-    }
-    p {
-      font-size: 18px;
-      color: #444;
-      line-height: 1.7;
-    }
-    .cta-btn {
-      display: inline-block;
-      background: #596e79;
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      font-size: 18px;
-      text-decoration: none;
-      margin-top: 20px;
-      transition: 0.3s ease;
-    }
-    .cta-btn:hover {
-      background: #3f525a;
-    }
-    ul {
-      font-size: 18px;
-      color: #444;
-      line-height: 1.7;
-      margin-left: 20px;
-    }
-  </style>
-</head>
-<body>
 
-  <div class="hero">
-    <h1>Welcome to Your Project Management Portal</h1>
-    <p>Plan, track, organize, and manage all your projects in one streamlined workspace.</p>
+<div class="hero">
+  <% if (locals.isLoggedIn) { %>
+    <h1>Welcome Back, <%= username %>!</h1>
+    <p>Your workspace is updated and ready for action.</p>
+  <% } else { %>
+    <h1>Track Your Projects</h1>
+    <p>Created By: Buthynah Almubayedh</p>
+  <% } %>
+</div>
+
+<br>
+
+<br>
+<br>
+<br>
+<div class="container-home">
+  <div class="dashboard-section">
+    <% if (locals.isLoggedIn) { %>
+      <h2 class="section-title">Active Projects</h2>
+      
+      <% if (locals.projects && projects.length > 0) { %>
+        <div class="project-grid">
+          <% projects.forEach(project => { %>
+            <div class="project-card">
+              <div>
+                <span class="status-badge"><%= project.status %></span>
+                <h3><%= project.name %></h3>
+                <p style="color: var(--text-light); font-size: 0.95rem;">
+                  <strong>Manager:</strong> <%= project.manager_name || project.owner_name %>
+                </p>
+              </div>
+              <a href="/project/<%= project.project_id %>" class="card-link">View Details →</a>
+            </div>
+          <% }) %>
+        </div>
+      <% } else { %>
+        <p>Your workspace is empty. Create your first project to get started.</p>
+      <% } %>
+  
+      <div class="btn-group">
+        <a href="/create-project" class="cta-btn">New Project</a>
+        <a href="/logout" class="cta-btn btn-secondary">Sign Out</a>
+      </div>
+  
+    <% } else { %>
+      <h2 class="section-title">Streamline Your Workflow</h2>
+      <p>Simple task management designed for modern teams.</p>
+      <div class="btn-group">
+        <a href="/login" class="cta-btn">Access Portal</a>
+        <a href="/register" class="cta-btn btn-secondary">Join for Free</a>
+      </div>
+    <% } %>
   </div>
+</div>
 
-  <div class="container">
-    <h2 class="section-title">What Is This Platform?</h2>
-    <p>
-      This project management system helps you create, organize, and monitor projects efficiently.
-      Whether you're managing a team, tracking progress, or overseeing multiple departments, this tool
-      provides the structure you need to keep everything running smoothly.
-    </p>
+<style>
+  :root {
+    --primary: #6366f1;
+    --primary-hover: #4f46e5;
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-dark: #1e293b;
+    --text-light: #64748b;
+    --hero-gradient: linear-gradient(135deg, #1a1a2e 0%, #334155 100%);
+  }
 
-    <h2 class="section-title">What Can You Do Here?</h2>
-    <p>With this platform, you can:</p>
-    <ul>
-      <li>Create new projects with details like descriptions, managers, team members, deadlines, and status</li>
-      <li>Track progress and update project status in real time</li>
-      <li>Assign tasks and responsibilities to team members</li>
-      <li>Upload project-related documents or images</li>
-      <li>View all ongoing and completed projects in a clean dashboard</li>
-      <li>Improve collaboration and organization across your team</li>
-    </ul>
+  .hero {
+    background: var(--hero-gradient);
+    color: white;
+    padding: 100px 20px;
+    text-align: center;
+    clip-path: ellipse(150% 100% at 50% 0%);
+  }
 
-    <h2 class="section-title">Start Managing Your Projects</h2>
-    <p>
-      Click below to begin creating your first project and start organizing your work effortlessly.
-    </p>
+  .hero h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 15px;
+    letter-spacing: -0.025em;
+  }
 
-    <a href="#" class="cta-btn">Create a New Project</a>
-  </div>
+  .hero p {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+  }
 
-</body>
-</html>
-</body>
+  .container-home {
+    max-width: 1100px;
+    margin: -60px auto 60px;
+    padding: 0 20px;
+  }
+
+  .dashboard-section {
+    background: var(--bg-card);
+    padding: 40px;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+  }
+
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 4px;
+    height: 28px;
+    background: var(--primary);
+    border-radius: 4px;
+  }
+
+  /* Project Grid */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 25px;
+  }
+
+  .project-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    padding: 24px;
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .project-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+    border-color: var(--primary);
+  }
+
+  .project-card h3 {
+    margin: 0 0 12px 0;
+    font-size: 1.25rem;
+  }
+
+  .status-badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  /* Buttons */
+  .btn-group {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+  }
+
+  .cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary);
+    color: white;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: 0.2s;
+  }
+
+  .cta-btn:hover {
+    background: var(--primary-hover);
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  }
+
+  .btn-secondary {
+    background: #f1f5f9;
+    color: #475569;
+  }
+
+  .btn-secondary:hover {
+    background: #e2e8f0;
+  }
+
+  .card-link {
+    margin-top: 15px;
+    color: var(--primary);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+</style>

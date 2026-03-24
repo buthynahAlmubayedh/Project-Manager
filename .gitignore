@@ -1,0 +1,33 @@
+.env
+# ENV
+.env
+.env.local
+.env.production
+
+# Node
+node_modules/
+
+# Logs
+*.log
+logs/
+tmp/
+
+# Build
+dist/
+build/
+
+# OS
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
+
+# Database backups
+*.sql
+*.dump
+
+# Keys
+*.pem
+*.key
+id_rsa
