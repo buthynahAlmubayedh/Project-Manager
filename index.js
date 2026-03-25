@@ -11,36 +11,32 @@ import session from "express-session";
 import pgSession from 'connect-pg-simple';
 import helmet from 'helmet';
 
+
+
+import pkg from 'pg'; // Changed to handle Pool
+const { Pool } = pkg; 
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-
-
 const app = express();
-const port = process.env.PORT;
+const port = process.env.PORT || 3000;
 
+// View Engine Setup
 app.use(expressLayouts);
 app.set("view engine", "ejs");
 app.set("views", "./views");
 app.set("layout", "layout");
 
 app.use(express.static(__dirname + '/public'));
-
-app.use(express.json());// Essential for fetch requests, body parser
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Helmet Configuration
 app.use(
   helmet({
     contentSecurityPolicy: {
       directives: {
         "default-src": ["'self'"],
-        "script-src": [
-          "'self'", 
-          "'unsafe-inline'", 
-          "'unsafe-eval'", // <--- ADD THIS LINE
-          "https://cdn.jsdelivr.net", 
-          "https://www.jsdelivr.com"
-        ],
-        "script-src-attr": ["'unsafe-inline'"],
+        "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.jsdelivr.net"],
         "style-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
         "connect-src": ["'self'", "https://cdn.jsdelivr.net", "http://localhost:*", "ws://localhost:*"],
       },
@@ -48,28 +44,22 @@ app.use(
   })
 );
 
-
-
-
-
-
-const db = new Client({
-  user: process.env.Us,
-  localhost: process.env.LH,
-  database: process.env.DN,
-  password: process.env.DP,
-  port: process.env.DataBase_Port
+// DB Setup - Use POOL for Supabase
+const db = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
+  // Supabase usually requires SSL
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
-db.on('connect', () => {
-  console.log('Connected to PostgreSQL successfully!');
-});
+db.on('error', (err) => console.error('Unexpected error on idle client', err));
 
-db.connect();
-
-
-
-app.set('trust proxy', 1);
+// Session Setup
 const pgStore = pgSession(session);
 app.use(session({ 
   store: new pgStore({
@@ -77,16 +67,31 @@ app.use(session({
     tableName: 'session',      
     createTableIfMissing: true 
   }),
-  secret: process.env.SESSION_SECRET,
+  secret: process.env.SESSION_SECRET || 'keyboard cat',
   resave: false,
   saveUninitialized: false,
+  proxy: true, // Required for secure cookies behind proxies like Render/Heroku
   cookie: { 
-    secure: process.env.NODE_ENV,             
+    secure: process.env.NODE_ENV === 'production',             
     maxAge: 1000 * 60 * 60 * 24, 
     httpOnly: true,            
     sameSite: 'lax'            
   }
 }));
+
+
+app.get('/status', async (req, res) => {
+  try {
+    const dbResult = await db.query('SELECT 1');
+    res.json({
+      status: 'Online',
+      database: dbResult ? 'Connected' : 'Error',
+      sessionID: req.sessionID
+    });
+  } catch (err) {
+    res.status(500).json({ status: 'Offline', error: err.message });
+  }
+});
 
 
 app.get("/register", (req, res) => {

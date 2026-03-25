@@ -546,8 +546,8 @@
                 <div class="border-start border-4 border-info ps-3 mb-3">
                     <strong><%= log.change_type %></strong>
                     <p class="mb-0"><%= log.old_value %> → <%= log.new_value %></p>
-                    <p class="mb-0" style="font-weight: bold; color: #353564;">Comment: <%= log.update_comment %></p>
-                    <small class="">By <%= log.changed_by %> on <%= new Date(log.changed_at).toLocaleString() %></small>
+                    <p class="mb-0" style="font-weight: bold; color: #6366f1;">Comment: <%= log.update_comment %></p>
+                    <small class="" style="color:#4f46e5">By <%= log.changed_by %> on <%= new Date(log.changed_at).toLocaleString() %></small>
                 </div>
             <% }) %>
         <% } else { %>
