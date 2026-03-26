@@ -166,6 +166,7 @@ app.post('/login', async (req, res) => {
           return res.status(401).send("Invalid email or password");
       }
   } catch (err) {
+    console.error("Login route error:", err);
       res.status(500).send("Server error");
   }
 });
