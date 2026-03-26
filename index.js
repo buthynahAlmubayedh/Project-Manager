@@ -47,16 +47,13 @@ app.use(
 
 // DB Setup - Use POOL for Supabase
 const db = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_NAME,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
-  // Supabase usually requires SSL
+  connectionString: process.env.DATABASE_URL,
   ssl: {
-    rejectUnauthorized: false
-  }
+    rejectUnauthorized: false,
+  },
 });
+
+
 db.connect()
   .then(() => console.log("Connected to Supabase"))
   .catch((err) => console.error("❌ DB Error:", err));
