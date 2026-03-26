@@ -18,7 +18,7 @@ const { Pool } = pkg;
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
 // View Engine Setup
 app.use(expressLayouts);
@@ -36,7 +36,8 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         "default-src": ["'self'"],
-        "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.jsdelivr.net"],
+        "script-src": ["'self'", "'unsafe-inline'", "'unsafe-eval'", "https://cdn.jsdelivr.net","https://www.jsdelivr.com" ],
+        scriptSrcAttr: ["'unsafe-inline'"],
         "style-src": ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
         "connect-src": ["'self'", "https://cdn.jsdelivr.net", "http://localhost:*", "ws://localhost:*"],
       },
@@ -56,6 +57,9 @@ const db = new Pool({
     rejectUnauthorized: false
   }
 });
+db.connect()
+  .then(() => console.log("Connected to Supabase"))
+  .catch((err) => console.error("❌ DB Error:", err));
 
 db.on('error', (err) => console.error('Unexpected error on idle client', err));
 
@@ -78,7 +82,6 @@ app.use(session({
     sameSite: 'lax'            
   }
 }));
-
 
 app.get('/status', async (req, res) => {
   try {
