@@ -13,14 +13,14 @@ import helmet from 'helmet';
 
 
 
-import pkg from 'pg'; // Changed to handle Pool
+import pkg from 'pg'; 
 const { Pool } = pkg; 
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 const port = process.env.PORT;
 
-// View Engine Setup
+
 app.use(expressLayouts);
 app.set("view engine", "ejs");
 app.set("views", "./views");
@@ -30,7 +30,7 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Helmet Configuration
+
 app.use(
   helmet({
     contentSecurityPolicy: {
@@ -45,7 +45,7 @@ app.use(
   })
 );
 
-// DB Setup - Use POOL for Supabase
+
 const db = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: {
@@ -61,7 +61,7 @@ db.connect()
 
 db.on('error', (err) => console.error('Unexpected error on idle client', err));
 
-// Session Setup
+
 const pgStore = pgSession(session);
 app.use(session({ 
   store: new pgStore({
@@ -72,7 +72,7 @@ app.use(session({
   secret: process.env.SESSION_SECRET || 'keyboard cat',
   resave: false,
   saveUninitialized: false,
-  proxy: true, // Required for secure cookies behind proxies like Render/Heroku
+  proxy: true, 
   cookie: { 
     secure: process.env.NODE_ENV === 'production',             
     maxAge: 1000 * 60 * 60 * 24, 
@@ -101,7 +101,7 @@ app.get("/register", (req, res) => {
   });
 });
 
-app.post('/submit', validPassword, async (req, res) => { // REGISTER
+app.post('/submit', validPassword, async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
 
   try {
@@ -119,8 +119,8 @@ app.post('/submit', validPassword, async (req, res) => { // REGISTER
       req.session.userId = newUser.user_id;
       req.session.username = newUser.username;
       
-      // FIX: Only ONE response allowed
-      res.status(201).send(`Account successfully created for ${newUser.username} (ID: ${newUser.user_id})!`);
+    
+      res.status(201).send(`Account successfully created for ${newUser.username}`);
 
     } catch (err) {
       if (err.code === '23505') { 
@@ -133,14 +133,14 @@ app.post('/submit', validPassword, async (req, res) => { // REGISTER
 
 
 
-// GET Login Page
+
 app.get("/login", (req, res) => {
   res.render("pages/login.ejs", {
       title: "Login"
   });
 });
 
-// POST Login Handler
+
 app.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -149,15 +149,14 @@ app.post('/login', async (req, res) => {
       const user = result.rows[0];
 
       if (user && user.password === password) {
-          // 1. REGENERATE: Deletes the old session and creates a new unique one
+         
           req.session.regenerate((err) => {
               if (err) return res.status(500).send("Session error");
 
-              // 2. Assign data to the NEW session
               req.session.userId = user.user_id;
               req.session.username = user.username;
 
-              // 3. SAVE: Ensures the new session is written to SQL before responding
+   
               req.session.save((err) => {
                   if (err) return res.status(500).send("Save error");
                   return res.status(200).send("Login successful");
@@ -177,8 +176,7 @@ app.post('/login', async (req, res) => {
 app.get("/", async (req, res) => {
   try {
       if (req.session.userId) {
-          // UPDATE for 2026: Include tasks (t) in the JOIN logic
-          // This ensures assigned users see the project on their home list
+
           const query = `
             SELECT DISTINCT p.* 
             FROM projects p
@@ -198,8 +196,7 @@ app.get("/", async (req, res) => {
               userId: req.session.userId 
           });
       }
-      
-      // Guest View
+
       res.render("home.ejs", { 
           title: "Welcome", 
           isLoggedIn: false,
@@ -216,7 +213,7 @@ app.get("/", async (req, res) => {
 app.get("/logout", (req, res) => {
   req.session.destroy(() => {
       res.clearCookie('connect.sid');
-      res.redirect("/"); // Takes them back to the guest home page
+      res.redirect("/"); 
   });
 });
 
@@ -260,13 +257,13 @@ app.get("/invitations", async (req, res) => {
 
 
 
-// Example route where you send the email
+
 app.post("/project/:id/invite", async (req, res) => {
   const { email } = req.body;
   const projectId = req.params.id;
 
   try {
-      // 1. Find the user ID from the email
+ 
       const userResult = await db.query("SELECT user_id FROM users WHERE email = $1", [email]);
       
       if (userResult.rows.length === 0) {
@@ -275,8 +272,7 @@ app.post("/project/:id/invite", async (req, res) => {
       
       const invitedUserId = userResult.rows[0].user_id;
 
-      // 2. CREATE the database record first
-      // This makes the invite visible on their /invitations page
+
       await db.query(
           `INSERT INTO project_members (project_id, user_id, status) 
            VALUES ($1, $2, 'Pending') 
@@ -284,8 +280,7 @@ app.post("/project/:id/invite", async (req, res) => {
           [projectId, invitedUserId]
       );
 
-      // 3. NOW send the email
-      // sendInvitationEmail(email, projectId); 
+   
 
       res.redirect(`/project/${projectId}?msg=InviteSent`);
   } catch (err) {
@@ -295,26 +290,22 @@ app.post("/project/:id/invite", async (req, res) => {
 });
 
 
-// ACCEPT INVITATION
-// ACCEPT
-// ACCEPT
 app.post("/project/:id/accept-invite", async (req, res) => {
   try {
       await db.query(
           "UPDATE project_members SET status = 'Accepted' WHERE project_id = $1 AND user_id = $2",
           [req.params.id, req.session.userId]
       );
-      // Now they have access, redirect to the dashboard
+    
       res.redirect(`/project/${req.params.id}`);
   } catch (err) {
       res.status(500).send("Error accepting invitation");
   }
 });
 
-// DECLINE
 app.post("/project/:id/decline-invite", async (req, res) => {
   try {
-      // Removing the row revokes access entirely
+
       await db.query(
           "DELETE FROM project_members WHERE project_id = $1 AND user_id = $2",
           [req.params.id, req.session.userId]
@@ -334,10 +325,9 @@ app.post('/submit-project', async (req, res) => {
   if (!creatorId) return res.status(401).send("Please login first.");
 
   try {
-      // Start a Transaction
+    
       await db.query('BEGIN');
 
-      // 1. Insert the Project
       const projectQuery = `
           INSERT INTO projects (user_id, name, description, status, start_date, manager_name) 
           VALUES ($1, $2, $3, $4, $5, $6) 
@@ -347,19 +337,17 @@ app.post('/submit-project', async (req, res) => {
       const result = await db.query(projectQuery, projectValues);
       const newProjectId = result.rows[0].project_id;
 
-      // 2. CRITICAL FIX: Automatically add creator as the first member
-      // This ensures the "Assign To" dropdown has at least one person (the owner)
       await db.query(
           "INSERT INTO project_members (project_id, user_id, role) VALUES ($1, $2, $3)",
           [newProjectId, creatorId, 'Owner']
       );
 
-      // Commit the Transaction
+     
       await db.query('COMMIT');
       
       res.redirect("/");
   } catch (err) {
-      await db.query('ROLLBACK'); // Cancel changes if anything fails
+      await db.query('ROLLBACK'); 
       console.error("Database Error:", err.message);
       res.status(500).send("Failed to save project.");
   }
@@ -372,8 +360,7 @@ app.get("/project/:id", async (req, res) => {
   if (!currentUserId) return res.redirect("/login");
 
   try {
-      // 1. Fetch Project Details with "Assignment-Based" Authorization
-      // Added a LEFT JOIN on tasks (t) to check if currentUserId is the assignee
+
       const projectQuery = `
           SELECT DISTINCT p.*, u.username as owner_name 
           FROM projects p
@@ -391,13 +378,13 @@ app.get("/project/:id", async (req, res) => {
       const projectRes = await db.query(projectQuery, [projectId, currentUserId]);
       const project = projectRes.rows[0];
 
-      // 2. Security: If no project is returned, they have no permission
+ 
       if (!project) {
           console.warn(`Unauthorized access attempt to project ${projectId} by user ${currentUserId}`);
           return res.redirect("/");
       }
 
-      // 3. Fetch Tasks (including assignee names)
+     
       const tasksRes = await db.query(`
           SELECT t.*, u.username as assigned_to_name 
           FROM tasks t 
@@ -405,7 +392,7 @@ app.get("/project/:id", async (req, res) => {
           WHERE t.project_id = $1 
           ORDER BY t.task_id DESC`, [projectId]);
 
-      // 4. Fetch EVERYONE for the "Assign To" dropdown
+
       const allUsersRes = await db.query(`
         SELECT u.user_id, u.username 
         FROM users u
@@ -423,7 +410,7 @@ app.get("/project/:id", async (req, res) => {
         ORDER BY username ASC
     `, [projectId]);
 
-    // Inside your GET route loop for tasks
+    
 
     let tasks = tasksRes.rows;
 for (let task of tasks) {
@@ -435,7 +422,7 @@ for (let task of tasks) {
 }
 
     
-  //  const acceptedMembers = allUsersRes.rows.filter(user => user.status === 'Accepted');
+
 
       res.render("pages/project-dashboard", {
           title: project.name,
@@ -458,7 +445,7 @@ app.post('/task/:id/update', async (req, res) => {
   const currentUser = req.session.username;
 
   try {
-      // 1. Fetch task and project owner for Authorization
+   
  const taskData = await db.query(`
     SELECT 
         t.*, 
@@ -473,7 +460,7 @@ app.post('/task/:id/update', async (req, res) => {
       if (taskData.rows.length === 0) return res.status(404).send("Task not found");
       const task = taskData.rows[0];
 
-      // 2. Security Check: Only Owner or Assignee
+  
       if (currentUser !== task.owner_name && currentUser !== task.assigned_to_name) {
           return res.status(403).send("Unauthorized: Only the owner or assignee can update this task.");
       }
@@ -481,13 +468,11 @@ app.post('/task/:id/update', async (req, res) => {
       const oldStatus = task.status;
       const oldPriority = task.priority;
 
-      // 3. Perform the Update
       await db.query(
           'UPDATE tasks SET status = $1, priority = $2 WHERE task_id = $3',
           [status, priority, taskId]
       );
 
-      // 4. Log History (Status Change)
       if (oldStatus !== status) {
           await db.query(
               'INSERT INTO task_history (task_id, changed_by, change_type, old_value, new_value, update_comment) VALUES ($1, $2, $3, $4, $5, $6)',
@@ -495,7 +480,7 @@ app.post('/task/:id/update', async (req, res) => {
           );
       }
 
-      // 5. Log History (Priority Change)
+    
       if (oldPriority !== priority) {
           await db.query(
               'INSERT INTO task_history (task_id, changed_by, change_type, old_value, new_value, update_comment) VALUES ($1, $2, $3, $4, $5, $6)',
@@ -512,7 +497,7 @@ app.post('/task/:id/update', async (req, res) => {
 
 
 
-// --- 2. ADD TASK LOGIC (Updated to include Assignee) ---
+
 app.post("/project/:id/task", async (req, res) => {
   const projectId = req.params.id;
   const { title, description, priority, assigned_user_id, status } = req.body;
@@ -545,7 +530,6 @@ app.post('/project/:id/update', async (req, res) => {
       `;
       await db.query(query, [name, description, status, projectId]);
 
-      // Redirect back to the dashboard to see changes
       res.redirect(`/project/${projectId}`);
   } catch (err) {
       console.error("Update Error:", err.message);
@@ -555,13 +539,12 @@ app.post('/project/:id/update', async (req, res) => {
 
 
 
-// --- 3. ADD MEMBER LOGIC (Duplicates removed and merged) ---
 app.post("/project/:id/add-member", async (req, res) => {
   const { email } = req.body;
   const projectId = req.params.id;
 
   try {
-      // Find the user by email
+  
       const userResult = await db.query("SELECT user_id FROM users WHERE email = $1", [email]);
       
       if (userResult.rows.length === 0) {
@@ -570,8 +553,7 @@ app.post("/project/:id/add-member", async (req, res) => {
       
       const invitedUserId = userResult.rows[0].user_id;
 
-      // Insert invitation. 
-      // This makes it show up on the user's /invitations page.
+
       await db.query(
           `INSERT INTO project_members (project_id, user_id, status) 
            VALUES ($1, $2, 'Pending') 
